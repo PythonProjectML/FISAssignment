@@ -1,0 +1,79 @@
+create table Clients(Client_ID numeric(4) primary key,
+Cname varchar(40),
+Address varchar(30),
+Email varchar(30) unique, 
+phone numeric(10),
+Business varchar(20) not null)
+
+create table Departments(Deptno numeric(2) primary key,
+Dname varchar(15) not null,
+Loc varchar(20))
+
+create table Employees(EmpNo numeric(4) primary key
+,Ename varchar(20) not null,
+Job varchar(15),
+Salary numeric(7) check(Salary>0),
+Deptno numeric(2) references Departments(Deptno))
+
+create table Projects(Project_ID numeric(3) primary key,
+Descr varchar(30) not null,
+Start_Date date,
+Planned_End_Date date,
+Actual_End_date date,Budget numeric(10)  check(Budget>0),
+Client_ID numeric(4) references Clients(Client_ID))
+
+create table EmpProjectTasks (Project_ID numeric(3) references Projects(Project_ID),
+Empno numeric(4) references Employees(Empno), 
+Start_Date date,
+End_Date date,
+Task varchar(25),
+Status varchar(15))
+
+insert into Clients(Client_ID ,Cname ,Address ,Email , phone,Business) values(1001,'ACME Utilities','Noida','contact@acmeutil.com',9567880032,'Manufacturing'),
+(1002,'Trackon Consultants','Mumbai','consult@trackon.com',8734210090,'Consultant'),
+(1003,'MoneySaver Distributors','Kolkata','save@moneysaver.com',7799886655,'Reseller'),
+(1004,'Lawful Corp','Chennai','justice@lawful.com',9210342219,'Professional')
+
+insert into Employees(EmpNo ,Ename ,Job ,Salary ,Deptno) values(7001,'Sandeep','Analyst',25000,10),
+(7002,'Rajesh','Designer',30000,10),
+(7003,'Madhav','Developer',40000,20),
+(7004,'Manoj','Developer',40000,20),
+(7005,'Abhay','Designer',35000,10),
+(7006,'Uma','Tester',30000,30),
+(7007,'Gita','Tech. Writer',30000,40),
+(7008,'Priya','Tester',35000,30),
+(7009,'Nutan','Developer',45000,20),
+(7010,'Smita','Analyst',20000,10),
+(7011,'Anand','Project Mgr',65000,10)
+
+
+
+insert into Departments(Deptno ,Dname ,Loc ) values(10,'Design','Pune'),
+(20,'Development','Pune'),
+(30,'Testing','Mumbai'),
+(40,'Document','Mumbai')
+
+insert into Projects(Project_ID ,Descr ,Start_Date ,Planned_End_Date ,Actual_End_date,Budget ,Client_ID ) values(401,'Inventory','1911-04-01','1911-10-01','1911-10-31',150000,1001)
+insert into Projects(Project_ID ,Descr ,Start_Date,Planned_End_Date ,Budget ,Client_ID ) values(402,'Accounting','1981-08-01','1912-01-12',500000,1002),
+(403,'Payroll','01-10-11','31-12-11',75000,1003),
+(404,'Contact Mgmt','1911-11-01','1911-12-31',50000,1004);
+
+
+insert into EmpProjectTasks(Project_ID ,Empno , Start_Date ,End_Date ,Task ,Status )values(401,7001,'1911-04-01','1911-04-20','System Analysis','Completed'),
+(401,7002,'1911-04-21','1911-05-30','System Design','Completed'),
+(401,7003,'1911-06-01','1911-07-15','Coding','Completed'),
+(401,7004,'1911-07-18','1911-09-19','Coding','Completed'),
+(401,7006,'1911-09-03','1911-09-1115','Testing','Completed'),
+(401,7009,'1911-09-18','1911-10-05','Code Change','Completed'),
+(401,7008,'1911-10-06','1911-10-16','Testing','Completed'),
+(401,7007,'1911-10-06','1911-10-22','Documentation','Completed'),
+(401,7011,'1911-10-11','1911-10-31','Sign off','Completed'),
+(401,7010,'1911-08-01','1911-08-11','System Analysis','Completed'),
+(401,7002,'1911-08-22','1911-09-30','System Design','Completed')
+insert into EmpProjectTasks (Project_ID  ,Empno , Start_Date ,Task ,Status) values(401,7004,'1911-10-01','Coding','In progress')
+
+select * from Clients
+select * from Employees
+select * from Departments
+select * from Projects
+select * from EmpProjectTasks

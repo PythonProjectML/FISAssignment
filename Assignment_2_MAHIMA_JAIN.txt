@@ -1,0 +1,80 @@
+create table DEPT(deptno numeric(2) primary key,
+ dname varchar(30),
+loc varchar(30));
+
+create table EMP(empno numeric(4) primary key,
+ename varchar(30),
+job varchar(30),
+mgrid numeric(4),
+hire_date date,
+sal int check(sal>0),
+comm int check(comm>0),
+deptno numeric(2) references DEPT(deptno));
+
+insert into DEPT(deptno,dname,loc) values(10,'ACCOUNTING','NEW YORK'),(20,'RESEARCH','DALLAS'),(30,'SALES','CHICAGO'),(40,'OPERATIONS','BOSTON');
+
+insert into EMP(empno,ename,job,mgrid,hire_date,sal,deptno)values(7369,'SMITH','CLERK',7902,'1980-12-17',800 ,20),
+(7566,'JONES','MANAGER',7839,'1981-04-02',2975,20),
+(7698,'BLAKE','MANAGER',7839,'1981-05-01',2850,30),
+(7782,'CLARK','MANAGER',7839,'1981-06-09',2450,10),
+(7788,'SCOTT','ANALYST',7566,'1987-04-19',3000,20),
+(7844,'TURNER','SALESMAN',7698,'1981-09-08',1500,30),
+(7876,'ADAMS','CLERK',7788,'1987-05-23',1100,20),
+(7900,'JAMES','CLERK',7698,'1981-12-03',950,30),
+(7902,'FORD','ANALYST',7566,'1981-12-03',3000,20),
+(7934,'MILLER','CLERK',7782,'1982-01-23',1300,10);
+
+insert into EMP(empno,ename,job,hire_date,sal,deptno)values(7839,'KING','PRESIDENT','1981-11-17',75000,10);
+(7839,'KING','PRESIDENT','1981-11-17',5000,10);
+
+
+insert into EMP(empno,ename,job,mgrid,hire_date,sal,comm,deptno)values(7499,'ALLEN','SALESMAN',7698,'1981-02-20',1600,300,30),
+(7521,'WARD','SALESMAN',7698,'1981-02-22',1250,500,30),
+(7654,'MARTIN','SALESMAN',7698,'1981-09-28',1250,1400,30);
+
+1)List all employees whose name begins with 'A'.
+Solution: select * from EMP where ename like 'A%';
+
+2)Select all those employees who don't have a manager. 
+Solution:select * from EMP where mgrid not in(select empno from EMP where job='MANAGER')
+and empno not in(select empno from EMP where job='MANAGER');
+
+3)List employee name, number and salary for those employees who earn in the range 1200 to 1400. 
+Solution: select ename as 'EMPLOYEE NAME',empno as 'EMPLOYEE NUMBER',sal as 'SALARY' from EMP where sal>=1200 and sal<=1400;
+
+
+4)Give all the employees in the RESEARCH department a 10% pay rise. Verify that this has been done by listing all their details before and after the rise. 
+Solution:  update emp set sal=sal+(sal*0.10) where deptno=(select deptno from dept where dname='research');
+
+5)Find the number of CLERKS employed. Give it a descriptive heading.
+Solution: select count(job)as 'NUMBER OF CLERKS EMPLOYED IN OFFICE'from EMP where job='CLERK';
+
+6)Find the average salary for each job type and the number of people employed in each job.
+Solution: select job as 'JOB TYPE',avg(sal)as 'AVERAGE SALARY',count(job)as 'NUMBER OF PEOPLE EMPLOYED' from EMP group by job; 
+
+7)List the employees with the lowest and highest salary. 
+Solution: select min(sal) as Lowest,max(sal) as Highest from emp;
+8)List full details of departments that don't have any employees.
+Solution: select b.deptno ,count(a.deptno) from dept b left outer join emp a on a.deptno=b.deptno group by b.deptno having count(a.deptno)=0;
+9)Get the names and salaries of all the analysts earning more than 1200 who are based in department 20. Sort the answer by ascending order of name.
+Solution: select ename,sal from EMP where sal>1200 and deptno=20 and job='ANALYST'order by ename asc;
+
+10)For each department, list its name and number together with the total salary paid to employees in that department. 
+Solution: select deptno,count(empno)as 'NUMBER',sum(sal)as 'Total salary' from EMP group by deptno order by deptno;
+
+11)Find out salary of both MILLER and SMITH.
+Solution: select ename,sal as 'SALARY' from EMP where ename='MILLER' or ename='SMITH';
+
+12)Find out the names of the employees whose name begin with ‘A’ or ‘M’. 
+Solution: select ename from EMP where ename like'A%' or ename like'M%';
+
+13)Compute yearly salary of SMITH.
+Solution: select (sal*12) as 'Annual Salary' from EMP where ename='SMITH';
+
+14)List the name and salary for all employees whose salary is not in the range of 1500 and 2850. 
+Solution: select * from EMP where sal not in(select sal from EMP where sal>=1500 and sal<=2850);
+
+15)display list of managers who have more than 2 employees reporting to them
+Solution:select ename,count(empno) as 'No of Employees',mgrid  from emp group by mgrid having count(empno) >2;
+
+  
