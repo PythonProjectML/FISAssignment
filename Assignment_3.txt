@@ -1,0 +1,38 @@
+1. select * from EMP where job='MANAGER'
+
+2. select ename as'EMPLOYEES NAME',sal AS 'SALARY' from EMP where sal>1000
+
+3. select ename as 'EMPLOYEE NAME',sal as 'SALARY' from EMP where ename<>'JAMES'
+
+4.  select * from EMP where ename like 'S%'
+
+5.  select ename from EMP where ename like '%A%'
+
+6. select * from EMP where ename like '__L%'
+
+7. select (sal/30) as 'Daily Salary' from EMP where ename='JONES'
+
+8. select sum(sal) as 'Total monthly salary' from EMP
+
+9. select  avg(sal) as 'Average Annual Salary' from EMP
+
+10. select ename,job,sal as'SALARY',deptno from EMP where deptno=30 and job<>'SALESMAN'
+
+11. select distinct(job) from EMP;
+
+12. select ename as 'EMPLOYEE ' , sal as ' MONTHLY SALARY' from EMP where sal>1500 and deptno in (10,30)
+
+13.select ename,job,sal from EMP where job='MANAGER' OR job='ANALYST' and sal not in(1000,3000,5000);
+
+14. select ename as 'Employee',sal as 'Salary',comm as 'Commission' from emp
+where comm > (sal*0.1)
+
+15. select ename from EMP where mgrid=7782  or ename like '%ll%' and deptno=30 
+
+16. select count(empno) as 'No of Employess' from emp 
+ where DATEDIFF(YEAR, hiredate,GETDATE()) between 10 and 20
+
+17. select E.ename,D.loc from EMP E,DEPT D where E.deptno=D.deptno order by E.deptno asc , E.ename desc
+
+18.select ename,DATEDIFF(YEAR, hiredate, GETDATE()) as 'Experience' from emp
+where ename='MILLER' 
